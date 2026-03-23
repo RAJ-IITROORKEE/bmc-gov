@@ -208,3 +208,14 @@
 .hero-delay-4 {
   animation-delay: 520ms;
 }
+
+@layer utilities {
+  @keyframes top-loader-shimmer {
+    0% {
+      transform: translateX(-120%);
+    }
+    100% {
+      transform: translateX(520%);
+    }
+  }
+}

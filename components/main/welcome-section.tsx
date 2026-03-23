@@ -5,9 +5,9 @@ import { Building2 } from "lucide-react";
 export default function WelcomeSection() {
   return (
     <Card className="h-full border-2 hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="border-b bg-primary/5">
+      <CardHeader className="border-b bg-primary/5 text-center">
         <CardTitle className="text-xl md:text-2xl text-primary flex items-center gap-2">
-          <Building2 className="h-6 w-6" />
+          <Building2 className="h-6 w-6 " />
           Welcome to Burdwan Medical College
         </CardTitle>
       </CardHeader>

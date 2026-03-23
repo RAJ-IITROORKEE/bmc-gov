@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
+import { Suspense } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TopLoader } from "@/components/layout/top-loader";
 import "./globals.css";
 
 const inter = Inter({
@@ -47,8 +49,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans">
-        <ThemeProvider
-        >
+        <ThemeProvider>
+          <Suspense fallback={null}>
+            <TopLoader />
+          </Suspense>
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>

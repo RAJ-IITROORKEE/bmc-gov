@@ -15,8 +15,8 @@ export default function InstitutionPage() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-primary/40" />
-        <div className="text-center text-white z-10 px-4">
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="relative text-center text-white z-10 px-4">
           <Building2 className="h-16 w-16 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4">The Institution</h1>
           <p className="text-lg md:text-xl">A Legacy of Excellence Since 1907</p>

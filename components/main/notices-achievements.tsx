@@ -57,24 +57,24 @@ export default function NoticesAchievements() {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="notices" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-primary/15 p-1.5 h-auto">
+        <TabsList className="grid w-full grid-cols-2 items-center bg-primary/10 dark:bg-primary/25 border border-primary/20 dark:border-primary/40 p-1 rounded-xl h-auto">
           <TabsTrigger
             value="notices"
-            className="gap-2 py-2.5 text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            className="h-10 w-full inline-flex items-center justify-center gap-2 text-sm font-semibold leading-none rounded-lg text-foreground dark:text-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
           >
             <Bell className="h-4 w-4" />
             Notices
           </TabsTrigger>
           <TabsTrigger
             value="achievements"
-            className="gap-2 py-2.5 text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            className="h-10 w-full inline-flex items-center justify-center gap-2 text-sm font-semibold leading-none rounded-lg text-foreground dark:text-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
           >
             <Trophy className="h-4 w-4" />
             Achievements
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="notices">
+        <TabsContent value="notices" className="mt-3">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export default function NoticesAchievements() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="achievements">
+        <TabsContent value="achievements" className="mt-3">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

@@ -13,7 +13,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background border-b">
+    <header className="sticky top-0 z-50 w-full bg-background border-b dark:bg-gray-900">
       {/* Top Header Section - Logos and Title */}
       <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-12 gap-4 items-center">
@@ -31,7 +31,7 @@ export default function Navbar() {
           </div>
 
           {/* Center - College Name */}
-          <div className="col-span-8 text-center">
+          <div className="col-span-8 text-center ">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary uppercase tracking-tight">
               {SITE_CONFIG.name}
             </h1>
@@ -56,7 +56,7 @@ export default function Navbar() {
       </div>
 
       {/* Navigation Bar */}
-      <nav className="bg-primary text-primary-foreground">
+      <nav className="bg-primary text-primary-foreground dark:bg-primary/90 dark:text-primary-foreground">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-14">
             {/* Desktop Navigation - Centered */}

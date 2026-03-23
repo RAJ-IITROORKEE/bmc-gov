@@ -30,13 +30,13 @@ const galleryData = {
     },
     {
       id: 3,
-      url: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=600&fit=crop",
+      url: "/banner_bmc.jpg",
       title: "Administrative Block",
       category: "Campus",
     },
     {
       id: 4,
-      url: "https://images.unsplash.com/photo-1567427018141-0584cfcbf1b8?w=800&h=600&fit=crop",
+      url: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&h=600&fit=crop",
       title: "Library Building",
       category: "Campus",
     },
@@ -135,8 +135,8 @@ export default function GalleryPage() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-primary/40" />
-        <div className="text-center text-white z-10 px-4">
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="relative text-center text-white z-10 px-4">
           <Camera className="h-16 w-16 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Gallery</h1>
           <p className="text-lg md:text-xl">Capturing Moments at BMC</p>
