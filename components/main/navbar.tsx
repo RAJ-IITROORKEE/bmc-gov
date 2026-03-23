@@ -67,8 +67,8 @@ export default function Navbar() {
       <nav className="bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-14">
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1 w-full">
+            {/* Desktop Navigation - Centered */}
+            <div className="hidden lg:flex items-center justify-center space-x-1 w-full">
               {MAIN_NAV_ITEMS.map((item) => (
                 <NavItem key={item.title} item={item} />
               ))}
