@@ -20,7 +20,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: {
     default: "Burdwan Medical College and Hospital",
-    template: "%s | BMC&H",
+    template: "%s | BMC",
   },
   description:
     "Burdwan Medical College and Hospital - A Center of Excellence in Patient Care Services, Medical Education and Research",
@@ -48,10 +48,6 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
         >
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>

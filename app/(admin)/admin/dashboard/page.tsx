@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, Award, Images, MessageSquare, Building2, Users } from "lucide-react";
+import { Bell, Award, Images, MessageSquare, Building2 } from "lucide-react";
 
 export default function AdminDashboard() {
   const stats = [
@@ -119,9 +119,9 @@ export default function AdminDashboard() {
         <Card className="hover:shadow-md transition-shadow cursor-pointer">
           <CardHeader>
             <CardTitle className="text-base">Edit Principal Message</CardTitle>
-            <CardDescription>
-              Update principal's message
-            </CardDescription>
+              <CardDescription>
+                Update principal&apos;s message
+              </CardDescription>
           </CardHeader>
         </Card>
       </div>

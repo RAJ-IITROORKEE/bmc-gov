@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/lib/auth";
-import { SITE_CONFIG, ADMIN_NAV_ITEMS } from "@/lib/constants";
+import { ADMIN_NAV_ITEMS } from "@/lib/constants";
 
 import {
   Sidebar,

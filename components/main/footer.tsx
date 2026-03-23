@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="font-bold text-lg mb-4">About BMC&H</h3>
+            <h3 className="font-bold text-lg mb-4">About Burdwan Medical College</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {SITE_CONFIG.name} is a premier institution dedicated to excellence
               in patient care services, medical education, and research.
@@ -69,11 +69,18 @@ export default function Footer() {
                 >
                   {SITE_CONFIG.contact.email}
                 </a>
+                <br />
+                <a
+                  href={`mailto:${SITE_CONFIG.contact.secondaryEmail}`}
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  {SITE_CONFIG.contact.secondaryEmail}
+                </a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                 <a
-                  href={`tel:${SITE_CONFIG.contact.phone}`}
+                  href={`tel:${SITE_CONFIG.contact.phoneHref}`}
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   {SITE_CONFIG.contact.phone}
@@ -82,7 +89,7 @@ export default function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                 <span className="text-muted-foreground">
-                  Burdwan Medical College, Purba Bardhaman, West Bengal
+                  {SITE_CONFIG.contact.address}
                 </span>
               </li>
             </ul>

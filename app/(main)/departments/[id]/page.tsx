@@ -4,10 +4,28 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Users, Award, BookOpen, Stethoscope } from "lucide-react";
+import { Users, Award, BookOpen } from "lucide-react";
 
-// Department data structure
-const departmentData: Record<string, any> = {
+interface FacultyMember {
+  name: string;
+  designation: string;
+  specialization: string;
+}
+
+interface DepartmentInfo {
+  name: string;
+  hod: {
+    name: string;
+    designation: string;
+    image: string;
+  };
+  about: string;
+  faculty: FacultyMember[];
+  facilities: string[];
+  courses: string[];
+}
+
+const departmentData: Record<string, DepartmentInfo> = {
   anatomy: {
     name: "ANATOMY",
     hod: {
@@ -98,9 +116,16 @@ export default function DepartmentDetailPage({
   return (
     <div className="min-h-screen">
       {/* Page Header */}
-      <section className="relative h-[300px] bg-gradient-to-r from-primary to-primary/80 flex items-center justify-center">
-        <div className="text-center text-white z-10">
-          <Stethoscope className="h-16 w-16 mx-auto mb-4" />
+      <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/banner_bmc.jpg"
+          alt="Department banner"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="relative text-center text-white z-10 px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Department of {dept.name}
           </h1>
@@ -161,7 +186,7 @@ export default function DepartmentDetailPage({
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {dept.faculty.map((member: any, index: number) => (
+                  {dept.faculty.map((member, index) => (
                     <div
                       key={index}
                       className="p-4 border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all"

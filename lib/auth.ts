@@ -55,7 +55,7 @@ export function isAuthenticated(): boolean {
     }
 
     return session.isAuthenticated;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -73,7 +73,7 @@ export function getCurrentAdmin(): AdminUser | null {
   try {
     const session: AdminUser = JSON.parse(sessionData);
     return session;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

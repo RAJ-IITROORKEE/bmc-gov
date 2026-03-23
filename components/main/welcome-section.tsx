@@ -27,7 +27,7 @@ export default function WelcomeSection() {
           </p>
           <p>
             With state-of-the-art facilities and a commitment to innovation in
-            medical education, BMC&H continues to be at the forefront of producing
+            medical education, BMC continues to be at the forefront of producing
             skilled doctors who serve society with dedication and compassion.
           </p>
         </div>

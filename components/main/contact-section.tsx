@@ -42,7 +42,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="py-16 bg-muted/30">
+    <section id="contact-us" className="py-16 bg-muted/30 scroll-mt-24">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
@@ -68,11 +68,7 @@ export default function ContactSection() {
                   <div>
                     <h3 className="font-semibold mb-1">Address</h3>
                     <p className="text-sm text-muted-foreground">
-                      Burdwan Medical College & Hospital
-                      <br />
-                      Purba Bardhaman, West Bengal
-                      <br />
-                      India - 713104
+                      {SITE_CONFIG.contact.address}
                     </p>
                   </div>
                 </div>
@@ -84,7 +80,7 @@ export default function ContactSection() {
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
                     <a
-                      href={`tel:${SITE_CONFIG.contact.phone}`}
+                      href={`tel:${SITE_CONFIG.contact.phoneHref}`}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
                     >
                       {SITE_CONFIG.contact.phone}
@@ -103,6 +99,13 @@ export default function ContactSection() {
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
                     >
                       {SITE_CONFIG.contact.email}
+                    </a>
+                    <br />
+                    <a
+                      href={`mailto:${SITE_CONFIG.contact.secondaryEmail}`}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {SITE_CONFIG.contact.secondaryEmail}
                     </a>
                   </div>
                 </div>

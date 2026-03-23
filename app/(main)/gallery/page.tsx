@@ -5,7 +5,14 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Camera, X } from "lucide-react";
+import { Camera } from "lucide-react";
+
+interface GalleryItem {
+  id: number;
+  url: string;
+  title: string;
+  category: string;
+}
 
 const galleryData = {
   campus: [
@@ -115,16 +122,24 @@ const galleryData = {
 };
 
 export default function GalleryPage() {
-  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
 
   return (
     <div className="min-h-screen">
       {/* Page Header */}
-      <section className="relative h-[300px] bg-gradient-to-r from-primary to-primary/80 flex items-center justify-center">
-        <div className="text-center text-white z-10">
+      <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="/bmc_hero_banner.png"
+          alt="Burdwan Medical College"
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-primary/40" />
+        <div className="text-center text-white z-10 px-4">
           <Camera className="h-16 w-16 mx-auto mb-4" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Gallery</h1>
-          <p className="text-lg md:text-xl">Capturing Moments at BMC&H</p>
+          <p className="text-lg md:text-xl">Capturing Moments at BMC</p>
         </div>
       </section>
 

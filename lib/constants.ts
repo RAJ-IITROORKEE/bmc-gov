@@ -5,8 +5,14 @@ export const SITE_CONFIG = {
   tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || "A Center of Excellence in Patient Care Services, Medical Education and Research",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   contact: {
-    email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@bmcgov.com",
-    phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "+91-XXX-XXX-XXXX",
+    email:
+      process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
+      "burdwanmedicalcollege76@gmail.com",
+    secondaryEmail: "principalbmc2015@gmail.com",
+    phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "(0342) 7962201",
+    phoneHref: "+913427962201",
+    address:
+      "Burdwan Medical College, Baburbag, Burdwan-713104",
   },
 };
 

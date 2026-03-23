@@ -6,7 +6,7 @@ import Footer from "@/components/main/footer";
 export const metadata: Metadata = {
   title: {
     default: "Burdwan Medical College and Hospital",
-    template: "%s | BMC&H",
+    template: "%s | BMC",
   },
   description:
     "Burdwan Medical College and Hospital provides top-notch medical education and healthcare services. A Center of Excellence in Patient Care Services, Medical Education and Research.",

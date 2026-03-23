@@ -9,7 +9,7 @@ export default function PrincipalMessagePage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Principal Message</h1>
           <p className="text-muted-foreground">
-            Edit and update the principal's message
+            Edit and update the principal&apos;s message
           </p>
         </div>
         <Button>
