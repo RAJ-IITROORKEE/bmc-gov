@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Footer() {
   return (
@@ -95,7 +96,8 @@ export default function Footer() {
               © {new Date().getFullYear()} {SITE_CONFIG.name}. All rights
               reserved.
             </p>
-            <div className="flex gap-6">
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Link
                 href="/admin/login"
                 className="hover:text-primary transition-colors"

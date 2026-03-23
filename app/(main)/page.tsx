@@ -1,28 +1,47 @@
 import HeroCarousel from "@/components/main/hero-carousel";
 import NewsMarquee from "@/components/main/news-marquee";
-import ContentPanels from "@/components/main/content-panels";
+import PrincipalMessage from "@/components/main/principal-message";
+import MSVPMessage from "@/components/main/msvp-message";
+import NoticesAchievements from "@/components/main/notices-achievements";
+import DepartmentsCorner from "@/components/main/departments-corner";
+import AboutSection from "@/components/main/about-section";
+import ContactSection from "@/components/main/contact-section";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
+      {/* Hero Section with Banner Image */}
       <HeroCarousel />
-      <NewsMarquee />
-      <ContentPanels />
       
-      {/* Welcome Section */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="text-center max-w-4xl mx-auto space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary">
-            Welcome to Burdwan Medical College and Hospital
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Established as a premier institution for medical education and healthcare,
-            BMC&H is committed to excellence in patient care services, medical education,
-            and research. We strive to create competent healthcare professionals who serve
-            society with dedication and compassion.
-          </p>
+      {/* News Marquee */}
+      <NewsMarquee />
+      
+      {/* Messages and Notices Section */}
+      <section className="py-12 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Side - Messages */}
+            <div className="lg:col-span-2 space-y-8">
+              <PrincipalMessage />
+              <MSVPMessage />
+            </div>
+            
+            {/* Right Side - Notices & Achievements */}
+            <div className="lg:col-span-1">
+              <NoticesAchievements />
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Departments Corner */}
+      <DepartmentsCorner />
+
+      {/* About Section with History Timeline */}
+      <AboutSection />
+
+      {/* Contact Section */}
+      <ContactSection />
     </div>
   );
 }
