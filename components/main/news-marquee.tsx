@@ -32,8 +32,8 @@ export default function NewsMarquee() {
           </div>
           
           <div className="flex-1 overflow-hidden">
-            <div className="animate-marquee inline-block whitespace-nowrap">
-              {newsItems.map((item, index) => (
+            <div className="marquee-container inline-block whitespace-nowrap">
+              {newsItems.map((item) => (
                 <span key={item.id} className="inline-flex items-center">
                   {item.link ? (
                     <a
@@ -51,7 +51,7 @@ export default function NewsMarquee() {
               ))}
               
               {/* Duplicate for seamless loop */}
-              {newsItems.map((item, index) => (
+              {newsItems.map((item) => (
                 <span key={`${item.id}-dup`} className="inline-flex items-center">
                   {item.link ? (
                     <a
@@ -71,25 +71,6 @@ export default function NewsMarquee() {
           </div>
         </div>
       </div>
-      
-      <style jsx>{`
-        @keyframes marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        
-        .animate-marquee {
-          animation: marquee 40s linear infinite;
-        }
-        
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   );
 }

@@ -158,3 +158,21 @@
     @apply font-sans;
   }
 }
+
+/* Custom Animations */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-container {
+  animation: marquee 40s linear infinite;
+}
+
+.marquee-container:hover {
+  animation-play-state: paused;
+}
