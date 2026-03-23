@@ -1,5 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
+import Navbar from "@/components/main/navbar";
+import Footer from "@/components/main/footer";
 
 export const metadata: Metadata = {
   title: {
@@ -17,9 +19,9 @@ export default function MainLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar will be added here */}
+      <Navbar />
       <main className="flex-1">{children}</main>
-      {/* Footer will be added here */}
+      <Footer />
     </div>
   );
 }
