@@ -1,47 +1,48 @@
 import HeroCarousel from "@/components/main/hero-carousel";
 import NewsMarquee from "@/components/main/news-marquee";
+import WelcomeSection from "@/components/main/welcome-section";
+import AdministrationEvents from "@/components/main/administration-events";
 import PrincipalMessage from "@/components/main/principal-message";
-import MSVPMessage from "@/components/main/msvp-message";
 import NoticesAchievements from "@/components/main/notices-achievements";
 import DepartmentsCorner from "@/components/main/departments-corner";
-import AboutSection from "@/components/main/about-section";
 import ContactSection from "@/components/main/contact-section";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Banner Image */}
+      {/* 1. Hero Section with Banner Image */}
       <HeroCarousel />
       
-      {/* News Marquee */}
+      {/* 2. News Marquee - Disclaimer/Notice */}
       <NewsMarquee />
       
-      {/* Messages and Notices Section */}
-      <section className="py-12 bg-background">
+      {/* 3. Welcome Section (Left) + Administration/Events (Right) */}
+      <section className="py-8 md:py-12 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Side - Messages */}
-            <div className="lg:col-span-2 space-y-8">
-              <PrincipalMessage />
-              <MSVPMessage />
-            </div>
-            
-            {/* Right Side - Notices & Achievements */}
-            <div className="lg:col-span-1">
-              <NoticesAchievements />
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <WelcomeSection />
+            <AdministrationEvents />
           </div>
         </div>
       </section>
 
-      {/* Departments Corner */}
+      {/* 4. Principal Message (Left) + Notices/Tenders Toggle (Right) */}
+      <section className="py-8 md:py-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+            <PrincipalMessage />
+            <NoticesAchievements />
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Departments Section */}
       <DepartmentsCorner />
 
-      {/* About Section with History Timeline */}
-      <AboutSection />
-
-      {/* Contact Section */}
+      {/* 6. Contact Section */}
       <ContactSection />
+
+      {/* 7. Footer - Already in layout */}
     </div>
   );
 }
