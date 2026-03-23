@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BMC-GOV Website
+
+Complete website revamp for **Burdwan Medical College and Hospital** using Next.js 16 and Shadcn/UI.
+
+## ✅ Current Progress
+
+### Phase 1 Complete ✅
+- Next.js 16 with App Router
+- Shadcn/UI components installed
+- Healthcare-themed color palette
+- Light/Dark mode support
+- Authentication utilities
+
+### Phase 2 Complete ✅  
+- Admin authentication system
+- Admin layout with sidebar
+- Admin dashboard
+- 5 Admin modules with placeholders
 
 ## Getting Started
 
-First, run the development server:
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env.local
+
+# Update .env.local with credentials
+# ADMIN_USERNAME=admin
+# ADMIN_PASSWORD=your_password
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) - Public site  
+Open [http://localhost:3000/admin/login](http://localhost:3000/admin/login) - Admin panel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Default Admin Credentials:**
+- Username: `admin`
+- Password: `bmc@2024`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+app/
+├── (main)/          # Public website
+├── (admin)/         # Admin panel
+│   └── admin/
+│       ├── login/
+│       ├── dashboard/
+│       ├── notices/
+│       ├── achievements/
+│       ├── gallery/
+│       ├── principal-message/
+│       └── departments/
+components/
+├── admin/           # Admin components
+├── main/            # Public components
+└── ui/              # Shadcn components
+lib/                 # Utilities & constants
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework:** Next.js 16.2.1
+- **UI:** Shadcn/UI + Tailwind CSS v4
+- **Icons:** Lucide React
+- **Fonts:** Inter, Poppins
+- **Language:** TypeScript
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Admin Panel Features
 
-## Deploy on Vercel
+All modules accessible via sidebar:
+- 📊 Dashboard - Stats overview
+- 🔔 Notices - Manage notices (🚧 In Progress)
+- 🏆 Achievements - Manage achievements (🚧 In Progress)
+- 🖼️ Gallery - Image management (🚧 In Progress)
+- 💬 Principal Message - Edit message (🚧 In Progress)
+- 🏢 Departments - Manage departments (🚧 In Progress)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Next Steps
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `plan.md` for complete development roadmap.
+
+**Immediate Next:**
+- Phase 3: Public website home page
+- Phase 4: Content pages
+- Phase 5: UI/UX refinement
+
+---
+
+**Version:** 0.1.0 | **Status:** 🚧 In Development | **Last Updated:** March 23, 2026

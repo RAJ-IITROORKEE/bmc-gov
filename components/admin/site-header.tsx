@@ -1,0 +1,58 @@
+"use client";
+
+import * as React from "react";
+import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+
+export function SiteHeader() {
+  const pathname = usePathname();
+
+  // Generate breadcrumbs from pathname
+  const pathSegments = pathname.split("/").filter(Boolean);
+  
+  const breadcrumbs = pathSegments.map((segment, index) => {
+    const href = "/" + pathSegments.slice(0, index + 1).join("/");
+    const label = segment
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    
+    return { href, label };
+  });
+
+  return (
+    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
+      <SidebarTrigger className="-ml-1" />
+      <Separator orientation="vertical" className="h-6" />
+      
+      <Breadcrumb>
+        <BreadcrumbList>
+          {breadcrumbs.map((crumb, index) => (
+            <React.Fragment key={crumb.href}>
+              {index > 0 && <BreadcrumbSeparator />}
+              <BreadcrumbItem>
+                {index === breadcrumbs.length - 1 ? (
+                  <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink href={crumb.href}>
+                    {crumb.label}
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </React.Fragment>
+          ))}
+        </BreadcrumbList>
+      </Breadcrumb>
+    </header>
+  );
+}
