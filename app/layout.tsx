@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { Suspense } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TopLoader } from "@/components/layout/top-loader";
 import "./globals.css";
@@ -53,6 +54,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <TopLoader />
           </Suspense>
+          <Toaster />
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>

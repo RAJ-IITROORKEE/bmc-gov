@@ -1,251 +1,137 @@
-import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Download, Link2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Users, Award, BookOpen } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getPublicDepartmentBySlug } from "@/lib/departments/service";
 
-interface FacultyMember {
-  name: string;
-  designation: string;
-  specialization: string;
+interface DepartmentPageProps {
+  params: Promise<{ id: string }>;
 }
 
-interface DepartmentInfo {
-  name: string;
-  hod: {
-    name: string;
-    designation: string;
-    image: string;
-  };
-  about: string;
-  faculty: FacultyMember[];
-  facilities: string[];
-  courses: string[];
-}
+export default async function DepartmentDetailPage({ params }: DepartmentPageProps) {
+  const { id } = await params;
+  const department = await getPublicDepartmentBySlug(id);
 
-const departmentData: Record<string, DepartmentInfo> = {
-  anatomy: {
-    name: "ANATOMY",
-    hod: {
-      name: "PROF. (DR.) JONAKI DAS SARKAR",
-      designation: "Professor & Head of Department",
-      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop",
-    },
-    about: "The Department of Anatomy is one of the oldest and most fundamental departments in medical education. It provides comprehensive knowledge of human body structure through systematic dissection, histology, embryology, and neuroanatomy.",
-    faculty: [
-      {
-        name: "Dr. Amit Kumar",
-        designation: "Associate Professor",
-        specialization: "Neuroanatomy",
-      },
-      {
-        name: "Dr. Priya Singh",
-        designation: "Assistant Professor",
-        specialization: "Histology",
-      },
-      {
-        name: "Dr. Rahul Sharma",
-        designation: "Assistant Professor",
-        specialization: "Embryology",
-      },
-    ],
-    facilities: [
-      "Modern Dissection Hall with adequate specimens",
-      "Histology Laboratory with microscopes",
-      "Museum with preserved specimens",
-      "Audio-Visual Teaching Aids",
-    ],
-    courses: ["MBBS", "MD Anatomy"],
-  },
-  microbiology: {
-    name: "MICROBIOLOGY",
-    hod: {
-      name: "PROF. (DR.) TANUSRI BISWAS",
-      designation: "Professor & Head of Department",
-      image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop",
-    },
-    about: "The Department of Microbiology provides comprehensive diagnostic services and teaching in Bacteriology, Virology, Mycology, Parasitology, and Immunology. The department runs several specialized labs including ICMR-DHR VRDL and RTPCR Laboratory.",
-    faculty: [
-      {
-        name: "Dr. Sudipto Roy",
-        designation: "Associate Professor",
-        specialization: "Clinical Microbiology",
-      },
-      {
-        name: "Dr. Ananya Mukherjee",
-        designation: "Assistant Professor",
-        specialization: "Virology",
-      },
-      {
-        name: "Dr. Debasis Ghosh",
-        designation: "Assistant Professor",
-        specialization: "Bacteriology",
-      },
-    ],
-    facilities: [
-      "ICMR-DHR Viral Research & Diagnostic Laboratory (VRDL)",
-      "RTPCR Laboratory for molecular diagnostics",
-      "Regional Viral Load Lab (RVLL)",
-      "NVHCP Laboratory",
-      "Modern Culture and Sensitivity Lab",
-    ],
-    courses: ["MBBS", "MD Microbiology"],
-  },
-  // Add more departments as needed
-};
-
-export async function generateStaticParams() {
-  return Object.keys(departmentData).map((id) => ({
-    id,
-  }));
-}
-
-export default function DepartmentDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const dept = departmentData[params.id];
-
-  if (!dept) {
+  if (!department) {
     notFound();
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Page Header */}
-      <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
-        <Image
-          src="/banner_bmc.jpg"
-          alt="Department banner"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/55" />
-        <div className="relative text-center text-white z-10 px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Department of {dept.name}
+    <div className="min-h-screen bg-background">
+      <section className="relative isolate overflow-hidden border-b">
+        <div className="absolute inset-0">
+          <Image
+            src={department.coverImageUrl || "/banner_bmc.jpg"}
+            alt={department.name}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-black/50" />
+        </div>
+
+        <div className="container relative mx-auto px-4 py-18 text-white md:py-24">
+          <Link
+            href="/departments"
+            className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-medium backdrop-blur-sm transition hover:bg-white/20"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to Departments
+          </Link>
+
+          <h1 className="max-w-4xl text-3xl font-bold tracking-tight md:text-5xl">
+            Department of {department.name}
           </h1>
+          <p className="mt-4 max-w-3xl text-sm text-white/90 md:text-base">
+            {department.overview ||
+              "Faculty profiles are maintained by the department administration and updated regularly."}
+          </p>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-12 md:py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto space-y-8">
-            {/* HOD Section */}
-            <Card className="border-2">
-              <CardHeader className="bg-primary/5 border-b">
-                <CardTitle className="text-2xl">Head of Department</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                  <Avatar className="h-32 w-32 border-4 border-primary">
-                    <AvatarImage src={dept.hod.image} alt={dept.hod.name} />
-                    <AvatarFallback className="text-2xl">
-                      {dept.hod.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-2xl font-bold text-primary mb-2">
-                      {dept.hod.name}
-                    </h3>
-                    <p className="text-lg text-muted-foreground">
-                      {dept.hod.designation}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      <section className="container mx-auto space-y-8 px-4 py-10 md:py-14">
+        {(department.sourceUrl || department.academicDetailsPdfUrl) && (
+          <Card>
+            <CardContent className="flex flex-wrap items-center gap-3 pt-5">
+              {department.sourceUrl && (
+                <Link
+                  href={department.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium text-foreground transition hover:border-primary/40 hover:text-primary"
+                >
+                  <Link2 className="h-4 w-4" />
+                  Source Page
+                </Link>
+              )}
+              {department.academicDetailsPdfUrl && (
+                <Link
+                  href={department.academicDetailsPdfUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+                >
+                  <Download className="h-4 w-4" />
+                  Departmental Academic Details
+                </Link>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
-            {/* About Department */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                  About the Department
+        {department.groupedFaculty.length === 0 ? (
+          <Card>
+            <CardContent className="py-14 text-center text-muted-foreground">
+              Faculty details are being updated for this department.
+            </CardContent>
+          </Card>
+        ) : (
+          department.groupedFaculty.map((group) => (
+            <Card key={group.roleKey}>
+              <CardHeader className="border-b bg-muted/25">
+                <CardTitle className="flex items-center justify-between gap-3">
+                  <span className="text-lg">{group.roleLabel}</span>
+                  <Badge variant="secondary">{group.members.length}</Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
-                  {dept.about}
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Faculty Members */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-6 w-6 text-primary" />
-                  Faculty Members
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {dept.faculty.map((member, index) => (
+              <CardContent className="pt-5">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {group.members.map((member) => (
                     <div
-                      key={index}
-                      className="p-4 border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all"
+                      key={member.id}
+                      className="rounded-xl border bg-card p-4 text-center shadow-sm transition hover:border-primary/30 hover:shadow-md"
                     >
-                      <h4 className="font-semibold text-foreground mb-1">
-                        {member.name}
-                      </h4>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {member.designation}
-                      </p>
-                      <Badge variant="secondary" className="text-xs">
-                        {member.specialization}
-                      </Badge>
+                      <Avatar className="mx-auto h-22 w-22 border-2 border-primary/20">
+                        <AvatarImage src={member.imageUrl || undefined} alt={member.name} />
+                        <AvatarFallback className="text-base font-semibold">
+                          {member.name
+                            .split(" ")
+                            .filter(Boolean)
+                            .slice(0, 2)
+                            .map((token) => token[0])
+                            .join("")
+                            .toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <p className="mt-3 font-semibold text-foreground">{member.name}</p>
+                      {member.designation && (
+                        <p className="mt-1 text-xs text-muted-foreground">{member.designation}</p>
+                      )}
+                      {member.specialization && (
+                        <Badge variant="outline" className="mt-2 text-[11px]">
+                          {member.specialization}
+                        </Badge>
+                      )}
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-
-            {/* Facilities */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="h-6 w-6 text-primary" />
-                  Facilities & Infrastructure
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {dept.facilities.map((facility: string, index: number) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0"></div>
-                      <span className="text-muted-foreground">{facility}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* Courses Offered */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                  Courses Offered
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-3">
-                  {dept.courses.map((course: string, index: number) => (
-                    <Badge key={index} className="text-sm px-4 py-2">
-                      {course}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+          ))
+        )}
       </section>
     </div>
   );

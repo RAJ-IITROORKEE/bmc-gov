@@ -1,122 +1,63 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Stethoscope, 
-  Heart, 
-  Brain, 
-  Baby, 
-  Eye, 
-  Bone,
-  Microscope,
-  Activity
-} from "lucide-react";
+import { ArrowRight, Building2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { getPublicDepartments } from "@/lib/departments/service";
 
-const departments = [
-  {
-    id: "general-medicine",
-    name: "General Medicine",
-    icon: Stethoscope,
-    description: "Comprehensive medical care and treatment",
-  },
-  {
-    id: "cardiology",
-    name: "Cardiology",
-    icon: Heart,
-    description: "Heart and cardiovascular care",
-  },
-  {
-    id: "neurology",
-    name: "Neurology",
-    icon: Brain,
-    description: "Neurological disorders and brain health",
-  },
-  {
-    id: "pediatrics",
-    name: "Pediatrics",
-    icon: Baby,
-    description: "Child health and development",
-  },
-  {
-    id: "ophthalmology",
-    name: "Ophthalmology",
-    icon: Eye,
-    description: "Eye care and vision treatment",
-  },
-  {
-    id: "orthopedics",
-    name: "Orthopedics",
-    icon: Bone,
-    description: "Bone, joint and muscle care",
-  },
-  {
-    id: "pathology",
-    name: "Pathology",
-    icon: Microscope,
-    description: "Laboratory and diagnostic services",
-  },
-  {
-    id: "surgery",
-    name: "General Surgery",
-    icon: Activity,
-    description: "Surgical procedures and operations",
-  },
-];
+export default async function DepartmentsCorner() {
+  const departments = await getPublicDepartments();
+  const featured = departments.slice(0, 8);
 
-export default function DepartmentsCorner() {
   return (
-    <section className="py-16 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-            Our Departments
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive medical services across specialized departments
-          </p>
+    <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted/25 py-16">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,oklch(0.86_0.06_238)_0,transparent_40%),radial-gradient(circle_at_bottom_left,oklch(0.9_0.05_250)_0,transparent_42%)]" />
+
+      <div className="container relative mx-auto px-4">
+        <div className="mb-10 flex items-end justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-bold text-primary md:text-4xl">Departments</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              Explore clinical and academic departments with structured faculty hierarchy.
+            </p>
+          </div>
+          <Link
+            href="/departments"
+            className="inline-flex items-center gap-2 rounded-lg border bg-background px-4 py-2 text-sm font-medium shadow-xs transition hover:border-primary/40 hover:text-primary"
+          >
+            View all
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {departments.map((dept) => {
-            const Icon = dept.icon;
-            return (
-              <Link
-                key={dept.id}
-                href={`/departments/${dept.id}`}
-                className="group"
-              >
-                <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary/50">
-                  <CardHeader>
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="p-4 rounded-full bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                        <Icon className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
-                      </div>
+        {featured.length === 0 ? (
+          <Card>
+            <CardContent className="flex h-40 items-center justify-center text-muted-foreground">
+              Department information will appear here once added from Admin.
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {featured.map((department: (typeof featured)[number]) => (
+              <Link key={department.id} href={`/departments/${department.slug}`} className="group">
+                <Card className="h-full border-border/60 bg-card/90 backdrop-blur transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/40 group-hover:shadow-xl">
+                  <CardContent className="space-y-4 p-5">
+                    <div className="inline-flex rounded-md bg-primary/10 p-2 text-primary">
+                      <Building2 className="h-5 w-5" />
                     </div>
-                    <CardTitle className="text-center text-xl group-hover:text-primary transition-colors">
-                      {dept.name}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-center text-sm text-muted-foreground">
-                      {dept.description}
-                    </p>
+                    <div className="space-y-1">
+                      <h3 className="line-clamp-2 text-base font-semibold text-foreground">
+                        {department.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground">Head of Department</p>
+                      <p className="line-clamp-2 text-sm font-medium text-foreground/90">
+                        {department.hodName || "To be updated"}
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
               </Link>
-            );
-          })}
-        </div>
-
-        <div className="text-center mt-10">
-          <Link
-            href="/departments"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            View All Departments
-          </Link>
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

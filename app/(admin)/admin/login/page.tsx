@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { authenticateAdmin } from "@/lib/auth";
 import { SITE_CONFIG } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -14,19 +15,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock } from "lucide-react";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setIsLoading(true);
 
     // Simulate a small delay for better UX
@@ -35,9 +33,10 @@ export default function AdminLoginPage() {
     const isAuth = await authenticateAdmin(username, password);
 
     if (isAuth) {
+      toast.success("Login successful");
       router.push("/admin/dashboard");
     } else {
-      setError("Invalid username or password");
+      toast.error("Invalid username or password");
       setIsLoading(false);
     }
   };
@@ -58,12 +57,6 @@ export default function AdminLoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <Input

@@ -26,6 +26,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -67,7 +70,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {ADMIN_NAV_ITEMS.map((item) => {
                 const Icon = iconMap[item.icon as keyof typeof iconMap];
-                const isActive = pathname === item.href;
+                const hasChildren = Array.isArray(
+                  (item as { children?: Array<{ href: string }> }).children,
+                );
+                const childItems = (item as { children?: Array<{ title: string; href: string }> }).children ?? [];
+                const isActive =
+                  pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`) ||
+                  childItems.some((child) => pathname === child.href);
 
                 return (
                   <SidebarMenuItem key={item.href}>
@@ -82,6 +92,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         {isActive && <ChevronRight className="ml-auto h-4 w-4" />}
                       </a>
                     </SidebarMenuButton>
+
+                    {hasChildren && (
+                      <SidebarMenuSub>
+                        {childItems.map((child) => (
+                          <SidebarMenuSubItem key={child.href}>
+                            <SidebarMenuSubButton
+                              asChild
+                              isActive={pathname === child.href}
+                            >
+                              <a href={child.href}>{child.title}</a>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    )}
                   </SidebarMenuItem>
                 );
               })}

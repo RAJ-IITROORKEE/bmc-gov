@@ -106,5 +106,15 @@ export const ADMIN_NAV_ITEMS = [
     title: "Departments",
     href: "/admin/departments",
     icon: "Building2",
+    children: [
+      {
+        title: "Department List",
+        href: "/admin/departments",
+      },
+      {
+        title: "Faculty Role Hierarchy",
+        href: "/admin/departments/hierarchy",
+      },
+    ],
   },
 ];
