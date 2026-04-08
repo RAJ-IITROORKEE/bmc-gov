@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { toContentDocumentItem } from "@/lib/content-documents/helpers";
-import type { ContentDocumentInput } from "@/lib/content-documents/types";
+import type { ContentDocumentInput, ContentDocumentItem } from "@/lib/content-documents/types";
 import type { ContentType } from "@prisma/client";
 
 function cleanOptional(value?: string): string | undefined {
@@ -21,7 +21,7 @@ function resolvePublishedAt(value?: string): Date {
   return parsed;
 }
 
-export async function getAdminContentDocuments(type: ContentType) {
+export async function getAdminContentDocuments(type: ContentType): Promise<ContentDocumentItem[]> {
   const rows = await prisma.contentDocument.findMany({
     where: { type },
     orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
@@ -30,7 +30,7 @@ export async function getAdminContentDocuments(type: ContentType) {
   return rows.map(toContentDocumentItem);
 }
 
-export async function getPublicContentDocuments(type: ContentType) {
+export async function getPublicContentDocuments(type: ContentType): Promise<ContentDocumentItem[]> {
   const rows = await prisma.contentDocument.findMany({
     where: { type, isActive: true },
     orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
@@ -39,7 +39,10 @@ export async function getPublicContentDocuments(type: ContentType) {
   return rows.map(toContentDocumentItem);
 }
 
-export async function getContentDocumentById(id: string, includeInactive = false) {
+export async function getContentDocumentById(
+  id: string,
+  includeInactive = false,
+): Promise<ContentDocumentItem | null> {
   const row = await prisma.contentDocument.findUnique({ where: { id } });
 
   if (!row) {
@@ -53,7 +56,10 @@ export async function getContentDocumentById(id: string, includeInactive = false
   return toContentDocumentItem(row);
 }
 
-export async function createContentDocument(type: ContentType, input: ContentDocumentInput) {
+export async function createContentDocument(
+  type: ContentType,
+  input: ContentDocumentInput,
+): Promise<ContentDocumentItem> {
   const row = await prisma.contentDocument.create({
     data: {
       type,
@@ -69,7 +75,10 @@ export async function createContentDocument(type: ContentType, input: ContentDoc
   return toContentDocumentItem(row);
 }
 
-export async function updateContentDocument(id: string, input: ContentDocumentInput) {
+export async function updateContentDocument(
+  id: string,
+  input: ContentDocumentInput,
+): Promise<ContentDocumentItem> {
   const row = await prisma.contentDocument.update({
     where: { id },
     data: {

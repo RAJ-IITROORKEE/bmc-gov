@@ -1,35 +1,44 @@
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, Award, Images, MessageSquare, Building2 } from "lucide-react";
+import { Award, Bell, Building2, CalendarDays, MessageSquare } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const [noticeCount, eventCount, achievementCount, departmentCount] = await Promise.all([
+    prisma.contentDocument.count({ where: { type: "NOTICE" } }),
+    prisma.contentDocument.count({ where: { type: "EVENT" } }),
+    prisma.contentDocument.count({ where: { type: "ACHIEVEMENT" } }),
+    prisma.department.count({ where: { isActive: true } }),
+  ]);
+
   const stats = [
     {
       title: "Total Notices",
-      value: "0",
+      value: String(noticeCount),
       description: "Published notices",
       icon: Bell,
       color: "text-blue-600",
       bgColor: "bg-blue-100",
     },
     {
+      title: "Events",
+      value: String(eventCount),
+      description: "Administration events",
+      icon: CalendarDays,
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-100",
+    },
+    {
       title: "Achievements",
-      value: "0",
+      value: String(achievementCount),
       description: "College achievements",
       icon: Award,
       color: "text-green-600",
       bgColor: "bg-green-100",
     },
     {
-      title: "Gallery Images",
-      value: "0",
-      description: "Total images",
-      icon: Images,
-      color: "text-purple-600",
-      bgColor: "bg-purple-100",
-    },
-    {
       title: "Departments",
-      value: "0",
+      value: String(departmentCount),
       description: "Active departments",
       icon: Building2,
       color: "text-orange-600",
@@ -78,19 +87,18 @@ export default function AdminDashboard() {
         <CardHeader>
           <CardTitle>Current Status</CardTitle>
           <CardDescription>
-            All admin modules are currently in progress
+            Core content modules are now live with database-backed data.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-lg border border-dashed p-8 text-center">
             <MessageSquare className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
             <h3 className="text-lg font-semibold mb-2">
-              Admin Panel Under Development
+              Admin Content Management Active
             </h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              The admin panel is currently being built. Use the sidebar to
-              navigate to different sections. All modules are functional with
-              static data for now.
+              You can now manage principal message, notices, events, achievements,
+              and departments from the sidebar with live updates.
             </p>
           </div>
         </CardContent>
@@ -98,32 +106,38 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-          <CardHeader>
-            <CardTitle className="text-base">Manage Notices</CardTitle>
-            <CardDescription>
-              Create and publish new notices
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        <Link href="/admin/notices">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <CardTitle className="text-base">Manage Notices</CardTitle>
+              <CardDescription>
+                Create and publish new notices
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
-        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-          <CardHeader>
-            <CardTitle className="text-base">Update Gallery</CardTitle>
-            <CardDescription>
-              Upload new images to gallery
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        <Link href="/admin/events">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <CardTitle className="text-base">Manage Events</CardTitle>
+              <CardDescription>
+                Publish event notices and PDFs
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
 
-        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-          <CardHeader>
-            <CardTitle className="text-base">Edit Principal Message</CardTitle>
+        <Link href="/admin/principal-message">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardHeader>
+              <CardTitle className="text-base">Edit Principal Message</CardTitle>
               <CardDescription>
                 Update principal&apos;s message
               </CardDescription>
-          </CardHeader>
-        </Card>
+            </CardHeader>
+          </Card>
+        </Link>
       </div>
     </div>
   );
