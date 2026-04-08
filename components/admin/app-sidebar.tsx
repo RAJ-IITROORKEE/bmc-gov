@@ -8,12 +8,14 @@ import {
   Images,
   MessageSquare,
   Building2,
+  CalendarDays,
   LogOut,
   ChevronRight,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { logout } from "@/lib/auth";
 import { ADMIN_NAV_ITEMS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 import {
   Sidebar,
@@ -41,15 +43,24 @@ const iconMap = {
   Images,
   MessageSquare,
   Building2,
+  CalendarDays,
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const router = useRouter();
+  const [expandedMenus, setExpandedMenus] = React.useState<Record<string, boolean>>({});
 
   const handleLogout = () => {
     logout();
     router.push("/admin/login");
+  };
+
+  const toggleMenu = (href: string) => {
+    setExpandedMenus((previous) => ({
+      ...previous,
+      [href]: !previous[href],
+    }));
   };
 
   return (
@@ -78,22 +89,40 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   pathname === item.href ||
                   pathname.startsWith(`${item.href}/`) ||
                   childItems.some((child) => pathname === child.href);
+                const isExpanded = Boolean(expandedMenus[item.href]);
 
                 return (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      className="cursor-pointer"
-                    >
-                      <a href={item.href} className="flex items-center gap-3">
+                    {hasChildren ? (
+                      <SidebarMenuButton
+                        isActive={isActive}
+                        className="cursor-pointer"
+                        onClick={() => toggleMenu(item.href)}
+                      >
                         {Icon && <Icon className="h-4 w-4" />}
                         <span>{item.title}</span>
-                        {isActive && <ChevronRight className="ml-auto h-4 w-4" />}
-                      </a>
-                    </SidebarMenuButton>
+                        <ChevronRight
+                          className={cn(
+                            "ml-auto h-4 w-4 transition-transform duration-200",
+                            isExpanded ? "rotate-90" : "rotate-0",
+                          )}
+                        />
+                      </SidebarMenuButton>
+                    ) : (
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isActive}
+                        className="cursor-pointer"
+                      >
+                        <a href={item.href} className="flex items-center gap-3">
+                          {Icon && <Icon className="h-4 w-4" />}
+                          <span>{item.title}</span>
+                          {isActive && <ChevronRight className="ml-auto h-4 w-4" />}
+                        </a>
+                      </SidebarMenuButton>
+                    )}
 
-                    {hasChildren && (
+                    {hasChildren && isExpanded && (
                       <SidebarMenuSub>
                         {childItems.map((child) => (
                           <SidebarMenuSubItem key={child.href}>

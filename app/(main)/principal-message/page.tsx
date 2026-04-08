@@ -1,7 +1,27 @@
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getPrincipalMessageOrDefault } from "@/lib/principal-message/service";
 
-export default function PrincipalMessagePage() {
+function getInitials(name: string): string {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  return initials || "PM";
+}
+
+export default async function PrincipalMessagePage() {
+  const principalMessage = await getPrincipalMessageOrDefault();
+  const paragraphs = principalMessage.message
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
   return (
     <div className="min-h-screen">
       <section className="relative h-[300px] overflow-hidden">
@@ -26,34 +46,38 @@ export default function PrincipalMessagePage() {
           <div className="max-w-4xl mx-auto">
             <Card className="border-2">
               <CardHeader className="border-b bg-primary/5">
-                <CardTitle className="text-2xl text-primary">
-                  Prof. (Dr.) Mousumi Bandyopadhyay
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">Principal, Burdwan Medical College</p>
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-[72px] w-[72px] border-2 border-primary">
+                    <AvatarImage
+                      src={principalMessage.profileImageUrl}
+                      alt={principalMessage.name}
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary text-lg font-bold">
+                      {getInitials(principalMessage.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle className="text-2xl text-primary">
+                      {principalMessage.name}
+                    </CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      {principalMessage.designation}
+                    </p>
+                    {principalMessage.officeEmail && (
+                      <p className="text-sm text-muted-foreground">{principalMessage.officeEmail}</p>
+                    )}
+                  </div>
+                </div>
               </CardHeader>
               <CardContent className="p-6 md:p-8 space-y-5 text-muted-foreground leading-relaxed">
-                <p>
-                  Welcome to Burdwan Medical College and Hospital, an institution with a rich
-                  legacy of excellence in medical education and healthcare services. Since our
-                  establishment, we have been committed to nurturing competent and compassionate
-                  healthcare professionals who serve society with dedication.
-                </p>
-                <p>
-                  Our college provides a comprehensive learning environment where students receive
-                  hands-on clinical exposure, guided by experienced faculty members. We emphasize
-                  both academic excellence and ethical medical practice, preparing our students to
-                  meet the challenges of modern healthcare.
-                </p>
-                <p>
-                  As we continue to grow and evolve, our focus remains steadfast on providing
-                  quality medical education, advancing research, and delivering superior patient
-                  care to the community we serve.
-                </p>
+                {paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
                 <p className="pt-3 font-semibold text-foreground">
-                  Prof. (Dr.) Mousumi Bandyopadhyay
+                  {principalMessage.name}
                   <br />
                   <span className="text-sm font-normal text-muted-foreground">
-                    Principal, Burdwan Medical College
+                    {principalMessage.designation}
                   </span>
                 </p>
               </CardContent>

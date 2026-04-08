@@ -88,6 +88,11 @@ export const ADMIN_NAV_ITEMS = [
     icon: "Bell",
   },
   {
+    title: "Events",
+    href: "/admin/events",
+    icon: "CalendarDays",
+  },
+  {
     title: "Achievements",
     href: "/admin/achievements",
     icon: "Award",

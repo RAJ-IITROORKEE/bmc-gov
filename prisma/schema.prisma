@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ContentType {
+  NOTICE
+  EVENT
+  ACHIEVEMENT
+}
+
 model Department {
   id                    String    @id @default(auto()) @map("_id") @db.ObjectId
   name                  String
@@ -60,4 +66,32 @@ model FacultyRoleHierarchy {
   updatedAt    DateTime @updatedAt
 
   @@index([displayOrder])
+}
+
+model PrincipalMessage {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  key             String   @unique @default("principal_message")
+  name            String
+  designation     String
+  message         String
+  profileImageUrl String
+  officeEmail     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ContentDocument {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  type        ContentType
+  title       String
+  description String
+  pdfUrl      String
+  pdfPublicId String?
+  isActive    Boolean     @default(true)
+  publishedAt DateTime    @default(now())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([type, publishedAt])
+  @@index([type, isActive])
 }

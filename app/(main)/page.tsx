@@ -6,8 +6,11 @@ import PrincipalMessage from "@/components/main/principal-message";
 import NoticesAchievements from "@/components/main/notices-achievements";
 import DepartmentsCorner from "@/components/main/departments-corner";
 import ContactSection from "@/components/main/contact-section";
+import { getPrincipalMessageOrDefault } from "@/lib/principal-message/service";
 
-export default function Home() {
+export default async function Home() {
+  const principalMessage = await getPrincipalMessageOrDefault();
+
   return (
     <div className="min-h-screen">
       {/* 1. Hero Section with Banner Image */}
@@ -30,7 +33,7 @@ export default function Home() {
       <section className="py-8 md:py-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            <PrincipalMessage />
+            <PrincipalMessage principalMessage={principalMessage} />
             <NoticesAchievements />
           </div>
         </div>

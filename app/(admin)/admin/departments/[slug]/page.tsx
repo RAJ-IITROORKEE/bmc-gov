@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import type { DepartmentDetailItem, FacultyItem, RoleHierarchyItem } from "@/lib/departments/types";
-import { ArrowLeft, Loader2, Pencil, Plus, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Loader2, Pencil, Plus, Save, Trash2, Upload } from "lucide-react";
 
 interface DepartmentFormState {
   name: string;
@@ -125,6 +125,10 @@ export default function DepartmentEditPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSavingDepartment, setIsSavingDepartment] = useState(false);
   const [isSavingFaculty, setIsSavingFaculty] = useState(false);
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
+  const [isUploadingDepartmentPdf, setIsUploadingDepartmentPdf] = useState(false);
+  const coverInputRef = useRef<HTMLInputElement | null>(null);
+  const pdfInputRef = useRef<HTMLInputElement | null>(null);
 
   const sortedFaculties = useMemo(() => {
     if (!department) {
@@ -234,6 +238,102 @@ export default function DepartmentEditPage() {
       toast.error(error instanceof Error ? error.message : "Failed to save department.");
     } finally {
       setIsSavingDepartment(false);
+    }
+  }
+
+  async function handleUploadCoverImage(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      event.target.value = "";
+      return;
+    }
+
+    setIsUploadingCover(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/admin/uploads/department-cover", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = (await response.json()) as { imageUrl?: string; message?: string };
+
+      if (!response.ok || !data.imageUrl) {
+        throw new Error(data.message || "Failed to upload cover image");
+      }
+
+      setDepartmentForm((previous) =>
+        previous
+          ? {
+              ...previous,
+              coverImageUrl: data.imageUrl || previous.coverImageUrl,
+            }
+          : previous,
+      );
+
+      toast.success("Cover image uploaded.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to upload cover image.");
+    } finally {
+      setIsUploadingCover(false);
+      event.target.value = "";
+    }
+  }
+
+  async function handleUploadAcademicPdf(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (file.type !== "application/pdf") {
+      toast.error("Please choose a PDF file.");
+      event.target.value = "";
+      return;
+    }
+
+    setIsUploadingDepartmentPdf(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/admin/uploads/pdf", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = (await response.json()) as { fileUrl?: string; message?: string };
+
+      if (!response.ok || !data.fileUrl) {
+        throw new Error(data.message || "Failed to upload PDF");
+      }
+
+      setDepartmentForm((previous) =>
+        previous
+          ? {
+              ...previous,
+              academicDetailsPdfUrl: data.fileUrl || previous.academicDetailsPdfUrl,
+            }
+          : previous,
+      );
+
+      toast.success("Academic details PDF uploaded.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to upload PDF.");
+    } finally {
+      setIsUploadingDepartmentPdf(false);
+      event.target.value = "";
     }
   }
 
@@ -447,16 +547,37 @@ export default function DepartmentEditPage() {
           </div>
 
           <div className="grid gap-2 md:col-span-2">
-            <Label htmlFor="department-cover-image">Cover Image URL</Label>
-            <Input
-              id="department-cover-image"
-              value={departmentForm.coverImageUrl}
-              onChange={(event) =>
-                setDepartmentForm((previous) =>
-                  previous ? { ...previous, coverImageUrl: event.target.value } : previous,
-                )
-              }
-            />
+            <Label>Cover Image</Label>
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border p-3">
+              <input
+                ref={coverInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(event) => void handleUploadCoverImage(event)}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => coverInputRef.current?.click()}
+                disabled={isUploadingCover || isSavingDepartment}
+              >
+                {isUploadingCover ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading image...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Cover Image
+                  </>
+                )}
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                Current URL: {departmentForm.coverImageUrl || "Not uploaded yet"}
+              </span>
+            </div>
           </div>
 
           <div className="grid gap-2 md:col-span-2">
@@ -473,18 +594,37 @@ export default function DepartmentEditPage() {
           </div>
 
           <div className="grid gap-2 md:col-span-2">
-            <Label htmlFor="department-pdf-url">Academic Details PDF URL</Label>
-            <Input
-              id="department-pdf-url"
-              value={departmentForm.academicDetailsPdfUrl}
-              onChange={(event) =>
-                setDepartmentForm((previous) =>
-                  previous
-                    ? { ...previous, academicDetailsPdfUrl: event.target.value }
-                    : previous,
-                )
-              }
-            />
+            <Label>Academic Details PDF</Label>
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border p-3">
+              <input
+                ref={pdfInputRef}
+                type="file"
+                accept="application/pdf"
+                className="hidden"
+                onChange={(event) => void handleUploadAcademicPdf(event)}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => pdfInputRef.current?.click()}
+                disabled={isUploadingDepartmentPdf || isSavingDepartment}
+              >
+                {isUploadingDepartmentPdf ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading PDF...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Academic PDF
+                  </>
+                )}
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                Current URL: {departmentForm.academicDetailsPdfUrl || "Not uploaded yet"}
+              </span>
+            </div>
           </div>
 
           <div className="md:col-span-2 flex justify-end">
