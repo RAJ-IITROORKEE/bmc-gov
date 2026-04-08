@@ -14,9 +14,9 @@ export default function HeroCarousel() {
           src="/banner_bmc.jpg"
           alt="Burdwan Medical College and Hospital"
           fill
+          sizes="100vw"
           className="object-cover opacity-100 dark:opacity-100"
           priority
-          quality={90}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/18 via-black/28 to-black/34 dark:from-black/18 dark:via-black/28 dark:to-black/34" />
         <div className="absolute inset-0 flex items-center justify-center">

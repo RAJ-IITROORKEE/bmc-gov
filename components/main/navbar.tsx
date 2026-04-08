@@ -25,6 +25,7 @@ export default function Navbar() {
                   src="/bmc_logo.jpg"
                   alt="BMC Logo"
                   fill
+                  sizes="80px"
                   className="object-contain"
                   priority
                 />
@@ -48,6 +49,7 @@ export default function Navbar() {
                   src="/wb-state-emblem.jpg"
                   alt="West Bengal State Emblem"
                   fill
+                  sizes="80px"
                   className="object-contain"
                   priority
                 />
